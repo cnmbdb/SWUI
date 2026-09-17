@@ -1,0 +1,7 @@
+reference.webp
+.DS_Store
+DerivedData/
+build/
+xcuserdata/
+*.xcuserstate
+

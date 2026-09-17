@@ -4,7 +4,7 @@
 
 - Source visual truth: `/tmp/codex-remote-attachments/01a0af67-717b-7783-93b3-019e0b30daa5/4846D588-5DFE-469B-BC13-88E92C229268/1-照片-1.jpg`
 - Source pixels: 591 x 1280, including Safari chrome. The app-owned region was compared after excluding the browser chrome and normalizing the screenshot to an inferred 393pt mobile viewport.
-- Implementation: `https://cnmbdb.github.io/SWUI/?v=469ac1a-mobile`
+- Implementation: `https://cnmbdb.github.io/SWUI/?v=shadow-final-mobile`
 - Implementation capture: CUA browser screenshot clip at 393 x 670 CSS px, device scale factor 1. The browser capture is retained in the verification session; this browser capability does not expose a filesystem screenshot path.
 - State: initial My QR state, with `Close`, `Contact`, and `My QR` visible.
 
@@ -21,6 +21,7 @@
 - Implementation control order and dimensions: Close 46 x 44, Contact 101.1 x 44, My QR 90.0 x 44, with 7pt gaps.
 - The implementation uses real Phosphor icon assets for the web prototype and SF Symbols in the native SwiftUI layer; no placeholder or handcrafted icon art is used.
 - The panel, canvas, and controls use layered translucent fills, bright upper edges, inset lower edges, blur, saturation, and restrained elevation. Computed button filter: `blur(22px) saturate(1.85)`.
+- The final material pass uses a thin external highlight ring, concentrated contact shadow, and separate inset top/bottom edges so the controls read as lifted glass rather than flat white pills.
 
 ## Required fidelity surfaces
 
@@ -36,7 +37,9 @@
 
 1. Initial pass: P1 visual mismatch. The panel was too wide/tall at the mobile breakpoint, controls were oversized, the default state differed from the source, and the material read as a generic translucent card.
 2. Fix: switched the mobile panel to a width-driven 1.165 aspect ratio, tuned the 393pt control geometry, set the default state to My QR, strengthened layered glass edges and backdrop treatment, and applied native `.glassEffect(.regular)` to the SwiftUI panel.
-3. Final pass: no actionable P0/P1/P2 findings. The online page was captured at the target mobile viewport and the primary interaction path was re-tested.
+3. Intermediate pass: geometry and control proportions matched the source, but the highlight was too diffuse and the contact shadow was too weak.
+4. Feedback iteration: tightened the shadow radius, increased the near-field shadow weight, added a thin outer highlight ring, and added a focused specular edge to each glass control. The native panel also received a restrained SwiftUI shadow.
+5. Final pass: no actionable P0/P1/P2 findings. The online page was captured at the target mobile viewport and the primary interaction path was re-tested after the material pass.
 
 ## Implementation checklist
 

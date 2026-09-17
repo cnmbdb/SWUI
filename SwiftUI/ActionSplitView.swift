@@ -61,6 +61,7 @@ struct ContextualActionSplit: View {
                     RoundedRectangle(cornerRadius: 28, style: .continuous)
                         .stroke(Color.white.opacity(0.72), lineWidth: 1)
                 }
+                .shadow(color: .black.opacity(0.14), radius: 18, y: 10)
 
             actionRail
         }

@@ -52,18 +52,20 @@ struct ContextualActionSplit: View {
 
     var body: some View {
         ZStack {
+            ambientLight
+
             RoundedRectangle(cornerRadius: 28, style: .continuous)
-                .fill(Color(uiColor: .secondarySystemBackground))
+                .fill(.clear)
+                .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 28, style: .continuous))
                 .overlay {
                     RoundedRectangle(cornerRadius: 28, style: .continuous)
-                        .stroke(Color.black.opacity(0.05), lineWidth: 1)
+                        .stroke(Color.white.opacity(0.72), lineWidth: 1)
                 }
 
-            ambientLight
             actionRail
         }
         .frame(maxWidth: .infinity)
-        .frame(height: 296)
+        .aspectRatio(1.16, contentMode: .fit)
         .clipped()
     }
 

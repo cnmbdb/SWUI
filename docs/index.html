@@ -11,16 +11,15 @@
     <style>
       :root {
         color-scheme: light;
-        --page: #e2e4e1;
-        --canvas: #e9e9e7;
+        --page: #e4e6e3;
+        --canvas: #e8e9e7;
         --ink: #151515;
-        --muted: rgba(21, 21, 21, 0.52);
         --line: rgba(21, 21, 21, 0.12);
-        --glass: rgba(255, 255, 255, 0.44);
-        --glass-strong: rgba(255, 255, 255, 0.62);
-        --glass-border: rgba(255, 255, 255, 0.78);
-        --glass-highlight: rgba(255, 255, 255, 0.94);
-        --glass-shadow: 0 18px 38px rgba(21, 21, 21, 0.12);
+        --glass: rgba(255, 255, 255, 0.40);
+        --glass-strong: rgba(255, 255, 255, 0.58);
+        --glass-border: rgba(255, 255, 255, 0.88);
+        --glass-highlight: rgba(255, 255, 255, 0.96);
+        --glass-shadow: 0 7px 18px rgba(21, 21, 21, 0.09);
         --green: #14d878;
         --blue: #4aa4ee;
       }
@@ -72,15 +71,18 @@
       .demo {
         position: relative;
         isolation: isolate;
-        width: min(calc(100% - 32px), 820px);
+        width: min(calc(100% - 28px), 820px);
         padding: 14px;
         overflow: hidden;
-        border: 1px solid var(--glass-border);
-        border-radius: 34px;
-        background: var(--glass);
+        border: 1px solid rgba(255, 255, 255, 0.86);
+        border-radius: 32px;
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.56), rgba(255, 255, 255, 0.32));
         -webkit-backdrop-filter: blur(28px) saturate(175%);
         backdrop-filter: blur(28px) saturate(175%);
-        box-shadow: inset 0 1px 0 var(--glass-highlight), 0 30px 70px rgba(21, 21, 21, 0.14);
+        box-shadow:
+          inset 0 1px 0 var(--glass-highlight),
+          inset 0 -1px 0 rgba(56, 61, 58, 0.12),
+          0 24px 48px rgba(21, 21, 21, 0.12);
       }
 
       .demo::before {
@@ -102,31 +104,34 @@
         overflow: hidden;
         border: 1px solid var(--line);
         border-radius: 26px;
-        background: var(--canvas);
+        background: linear-gradient(145deg, rgba(244, 246, 242, 0.65), rgba(226, 230, 228, 0.54));
+        -webkit-backdrop-filter: blur(20px) saturate(170%);
+        backdrop-filter: blur(20px) saturate(170%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72), inset 0 -1px 0 rgba(58, 63, 60, 0.10);
       }
 
       .canvas::before,
       .canvas::after {
         position: absolute;
-        width: 230px;
-        height: 230px;
+        width: 290px;
+        height: 290px;
         border-radius: 50%;
         content: "";
-        filter: blur(38px);
-        opacity: 0.46;
+        filter: blur(58px);
+        opacity: 0.38;
         pointer-events: none;
       }
 
       .canvas::before {
-        top: -120px;
-        left: -86px;
-        background: rgba(20, 216, 120, 0.34);
+        top: -154px;
+        left: -126px;
+        background: rgba(76, 215, 153, 0.38);
       }
 
       .canvas::after {
-        right: -86px;
-        bottom: -122px;
-        background: rgba(74, 164, 238, 0.28);
+        right: -126px;
+        bottom: -154px;
+        background: rgba(74, 164, 238, 0.26);
       }
 
       .action-rail {
@@ -135,7 +140,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 12px;
+        gap: 10px;
         max-width: 100%;
         padding: 20px;
         transform-origin: center;
@@ -151,19 +156,22 @@
         min-height: 56px;
         padding: 0 18px;
         overflow: hidden;
-        border: 1px solid var(--glass-border);
+        border: 1px solid rgba(255, 255, 255, 0.92);
         border-radius: 999px;
-        background: var(--glass-strong);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(255, 255, 255, 0.48));
         color: var(--ink);
         cursor: pointer;
         -webkit-backdrop-filter: blur(22px) saturate(185%);
         backdrop-filter: blur(22px) saturate(185%);
-        box-shadow: inset 0 1px 0 var(--glass-highlight), var(--glass-shadow);
+        box-shadow:
+          inset 0 1px 0 var(--glass-highlight),
+          inset 0 -1px 0 rgba(57, 62, 59, 0.12),
+          var(--glass-shadow);
         font-size: 17px;
         font-weight: 650;
         line-height: 1;
         white-space: nowrap;
-        transition: transform 150ms ease, box-shadow 180ms ease;
+        transition: transform 170ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 180ms ease;
       }
 
       .action::before {
@@ -228,46 +236,51 @@
 
       @media (max-width: 560px) {
         .demo {
-          width: min(calc(100% - 20px), 820px);
+          width: min(calc(100% - 18px), 820px);
           padding: 10px;
-          border-radius: 27px;
+          border-radius: 22px;
         }
 
         .canvas {
-          min-height: 330px;
-          border-radius: 21px;
+          min-height: 0;
+          aspect-ratio: 1.165 / 1;
+          border-radius: 19px;
         }
 
         .action-rail {
-          gap: 8px;
+          gap: 7px;
           padding: 12px;
         }
 
         .action {
-          min-height: 48px;
-          gap: 7px;
-          padding: 0 13px;
-          font-size: 14px;
+          min-height: 44px;
+          gap: 8px;
+          padding: 0 8px;
+          font-size: 17px;
         }
 
         .action-icon {
-          width: 19px;
-          height: 19px;
-          font-size: 18px;
+          width: 20px;
+          height: 20px;
+          font-size: 20px;
         }
 
         .action-close {
-          width: 48px;
+          width: 46px;
+        }
+
+        .action-close .action-icon {
+          font-size: 20px;
         }
 
         .action-payment {
           padding-left: 4px;
-          padding-right: 13px;
+          padding-right: 9px;
         }
 
         .action-payment .action-icon {
-          width: 38px;
-          height: 38px;
+          width: 36px;
+          height: 36px;
           font-size: 18px;
         }
       }
@@ -333,7 +346,7 @@
 
       const rail = document.querySelector("#actionRail");
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-      let currentState = "discover";
+      let currentState = "qr";
       let activeTimeline = null;
 
       function actionMarkup(action) {

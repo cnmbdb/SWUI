@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var phase: ActionPhase = .discover
+    @State private var phase: ActionPhase = .qr
 
     private var animation: Animation {
         reduceMotion
@@ -21,7 +21,7 @@ struct ContentView: View {
             ) { action in
                 handle(action)
             }
-            .padding(20)
+            .padding(10)
         }
     }
 

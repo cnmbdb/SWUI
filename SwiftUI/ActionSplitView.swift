@@ -122,13 +122,8 @@ struct ContextualActionSplit: View {
         .allowsHitTesting(false)
     }
 
-    @ViewBuilder
     private var actionRail: some View {
-        if #available(iOS 26.0, *) {
-            GlassEffectContainer(spacing: 18) {
-                actionItems
-            }
-        } else {
+        GlassEffectContainer(spacing: 18) {
             actionItems
         }
     }
@@ -150,18 +145,12 @@ struct ContextualActionSplit: View {
         .animation(animation, value: phase)
     }
 
-    @ViewBuilder
     private func actionView(for action: ActionItem) -> some View {
-        if #available(iOS 26.0, *) {
-            ActionPill(action: action) {
-                onSelect(action)
-            }
-            .glassEffectID(action.id, in: namespace)
-        } else {
-            ActionPill(action: action) {
-                onSelect(action)
-            }
+        ActionPill(action: action) {
+            onSelect(action)
         }
+        .glassEffectID(action.id, in: namespace)
+        .glassEffectTransition(.matchedGeometry)
     }
 }
 
@@ -198,14 +187,14 @@ private struct ActionPill: View {
             .foregroundStyle(.primary)
             .padding(.horizontal, 18)
             .frame(minHeight: 54)
-            .swuiGlass(in: Capsule())
+            .glassEffect(.regular.interactive(), in: Capsule())
 
         case .close:
             Image(systemName: action.systemImage)
                 .font(.system(size: 20, weight: .semibold))
                 .foregroundStyle(.primary)
                 .frame(width: 54, height: 54)
-                .swuiGlass(in: Circle())
+                .glassEffect(.regular.interactive(), in: Circle())
 
         case .pay, .request:
             let accent: Color
@@ -232,33 +221,7 @@ private struct ActionPill: View {
             .padding(.leading, 5)
             .padding(.trailing, 18)
             .frame(minHeight: 54)
-            .swuiGlass(in: Capsule())
+            .glassEffect(.regular.tint(accent).interactive(), in: Capsule())
         }
-    }
-}
-
-private struct SWUIGlassModifier<S: Shape>: ViewModifier {
-    let shape: S
-
-    @ViewBuilder
-    func body(content: Content) -> some View {
-        if #available(iOS 26.0, *) {
-            content
-                .glassEffect(.regular.interactive(), in: shape)
-        } else {
-            content
-                .background(.ultraThinMaterial, in: shape)
-                .overlay {
-                    shape
-                        .stroke(Color.white.opacity(0.48), lineWidth: 1)
-                }
-                .shadow(color: .black.opacity(0.09), radius: 16, y: 7)
-        }
-    }
-}
-
-private extension View {
-    func swuiGlass<S: Shape>(in shape: S) -> some View {
-        modifier(SWUIGlassModifier(shape: shape))
     }
 }

@@ -1108,7 +1108,7 @@
           <div class="hero-meta">
             <span>Native SwiftUI</span>
             <span class="meta-rule" aria-hidden="true"></span>
-            <span>iOS 17+</span>
+            <span>iOS 27+</span>
           </div>
         </div>
 
@@ -1197,10 +1197,10 @@
           <div class="code-copy">
             <p class="section-label">The native layer</p>
             <h2>Same state machine. Native implementation.</h2>
-            <p>The source uses SwiftUI data, SF Symbols, matched geometry, and one critically damped spring. There is no web component pretending to be the app.</p>
+            <p>The source uses SwiftUI data, SF Symbols, native Liquid Glass, matched geometry, and one critically damped spring. There is no web component pretending to be the app.</p>
             <span class="implementation-note">
               <i class="ph ph-apple-logo" aria-hidden="true"></i>
-              Built for iOS 17+
+              Built for iOS 27+
             </span>
           </div>
           <div class="code-card" aria-label="SwiftUI source excerpt">
@@ -1219,6 +1219,19 @@
             <span class="token-keyword">return</span> [.close, .contact, .myQR]
         <span class="token-keyword">case</span> .payment:
             <span class="token-keyword">return</span> [.pay, .request]
+        }
+    }
+}
+
+<span class="token-keyword">@Namespace</span> <span class="token-keyword">private</span> <span class="token-keyword">var</span> namespace
+
+<span class="token-type">GlassEffectContainer</span>(spacing: <span class="token-string">18</span>) {
+    <span class="token-type">HStack</span>(spacing: <span class="token-string">12</span>) {
+        <span class="token-type">ForEach</span>(phase.actions) { action <span class="token-keyword">in</span>
+            <span class="token-type">ActionPill</span>(action: action)
+                .glassEffect(.regular.interactive(), <span class="token-keyword">in</span>: <span class="token-type">Capsule</span>())
+                .glassEffectID(action.id, <span class="token-keyword">in</span>: namespace)
+                .glassEffectTransition(.matchedGeometry)
         }
     }
 }

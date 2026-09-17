@@ -100,8 +100,7 @@ struct ContentView: View {
                     )
                     .font(.system(.subheadline, design: .rounded).weight(.semibold))
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(.black)
+                .buttonStyle(.glass)
 
                 Text("Tap any state to inspect the split.")
                     .font(.system(.caption, design: .rounded))
@@ -135,7 +134,7 @@ struct ContentView: View {
             Label("Open SWUI.xcodeproj to run the native version.", systemImage: "arrow.up.right.square")
                 .font(.system(.subheadline, design: .rounded).weight(.semibold))
 
-            Text("On iOS 26+, the action rail uses native Liquid Glass. iOS 17 and later fall back to ultraThinMaterial, while docs/ mirrors the same three-state model for GitHub Pages.")
+            Text("This build targets iOS 27 and uses the refreshed native Liquid Glass appearance. The web showcase in docs/ mirrors the same three-state model for GitHub Pages.")
                 .font(.system(.caption, design: .rounded))
                 .foregroundStyle(.secondary)
         }

@@ -9,7 +9,7 @@
 
 ## 原生实现
 
-打开 SWUI.xcodeproj，在 iOS 17 或更高版本运行。演示包含三个上下文：
+打开 SWUI.xcodeproj，在 iOS 27 或更高版本运行。演示包含三个上下文：
 
 - Discover：Contact、Scan QR、关闭
 - My QR：关闭、Contact、My QR
@@ -17,7 +17,7 @@
 
 核心动效使用 .spring(response: 0.52, dampingFraction: 0.88)，并在开启 Reduce Motion 时降级为短淡入淡出。
 
-材质实现：iOS 26 及以上使用原生 Liquid Glass，通过 GlassEffectContainer、.glassEffect(.regular.interactive(), in:) 和 glassEffectID 让按钮产生系统级玻璃、交互高光与形状过渡；iOS 17 至 iOS 25 使用 .ultraThinMaterial 回退。Pages 展示页同步使用半透明层、backdrop-filter、饱和度和内侧高光来模拟相同的玻璃层次，并响应 reduced transparency。
+材质实现：项目锁定 iOS 27，使用最新 SwiftUI Liquid Glass，通过 GlassEffectContainer、.glassEffect(.regular.interactive(), in:)、glassEffectID 和 glassEffectTransition(.matchedGeometry) 让按钮产生系统级玻璃、交互高光与形状融合。Pay / Request 使用原生 Glass tint 表达语义颜色；暂停按钮使用系统 .glass button style。Pages 展示页同步使用半透明层、backdrop-filter、饱和度和内侧高光来复刻相同的玻璃层次，并响应 reduced transparency。
 
 ## 在线展示
 

@@ -226,53 +226,6 @@
         background: var(--blue);
       }
 
-      .demo-footer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        padding: 14px 6px 2px 8px;
-      }
-
-      .context {
-        min-width: 0;
-      }
-
-      .context-label {
-        display: block;
-        margin-bottom: 2px;
-        color: var(--muted);
-        font-size: 12px;
-      }
-
-      .context-name {
-        display: block;
-        font-size: 15px;
-        font-weight: 650;
-      }
-
-      .phase-dots {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .phase-dot {
-        width: 8px;
-        height: 8px;
-        padding: 0;
-        border: 0;
-        border-radius: 50%;
-        background: rgba(21, 21, 21, 0.2);
-        cursor: pointer;
-        transition: transform 180ms ease, background-color 180ms ease;
-      }
-
-      .phase-dot[aria-selected="true"] {
-        transform: scale(1.45);
-        background: var(--ink);
-      }
-
       @media (max-width: 560px) {
         .demo {
           width: min(calc(100% - 20px), 820px);
@@ -352,23 +305,11 @@
       <div class="canvas">
         <div class="action-rail" id="actionRail" aria-live="polite" aria-label="Contextual actions"></div>
       </div>
-      <div class="demo-footer">
-        <div class="context">
-          <span class="context-label">Current context</span>
-          <strong class="context-name" id="contextName">Discover</strong>
-        </div>
-        <div class="phase-dots" role="tablist" aria-label="Choose a context">
-          <button class="phase-dot" data-state="discover" role="tab" aria-label="Discover context" aria-selected="true"></button>
-          <button class="phase-dot" data-state="qr" role="tab" aria-label="My QR context" aria-selected="false"></button>
-          <button class="phase-dot" data-state="payment" role="tab" aria-label="Payment context" aria-selected="false"></button>
-        </div>
-      </div>
     </main>
 
     <script>
       const states = {
         discover: {
-          label: "Discover",
           actions: [
             { id: "contact", label: "Contact", icon: "ph-user-circle", className: "" },
             { id: "scan", label: "Scan QR", icon: "ph-qr-code", className: "" },
@@ -376,7 +317,6 @@
           ]
         },
         qr: {
-          label: "My QR",
           actions: [
             { id: "close", label: "Close", icon: "ph-x", className: "action-close" },
             { id: "contact", label: "Contact", icon: "ph-user-circle", className: "" },
@@ -384,7 +324,6 @@
           ]
         },
         payment: {
-          label: "Payment",
           actions: [
             { id: "pay", label: "Pay", icon: "ph-arrow-up-right", className: "action-payment action-pay" },
             { id: "request", label: "Request", icon: "ph-arrow-down-left", className: "action-payment action-request" }
@@ -393,8 +332,6 @@
       };
 
       const rail = document.querySelector("#actionRail");
-      const contextName = document.querySelector("#contextName");
-      const dots = [...document.querySelectorAll(".phase-dot")];
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
       let currentState = "discover";
       let activeTimeline = null;
@@ -413,10 +350,6 @@
       function drawState() {
         const state = states[currentState];
         rail.innerHTML = state.actions.map(actionMarkup).join("");
-        contextName.textContent = state.label;
-        dots.forEach(dot => {
-          dot.setAttribute("aria-selected", String(dot.dataset.state === currentState));
-        });
       }
 
       function nextForAction(actionId) {
@@ -478,10 +411,6 @@
         const action = event.target.closest(".action");
         if (!action) return;
         goTo(nextForAction(action.dataset.action));
-      });
-
-      dots.forEach(dot => {
-        dot.addEventListener("click", () => goTo(dot.dataset.state));
       });
 
       drawState();

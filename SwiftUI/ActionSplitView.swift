@@ -1,22 +1,9 @@
 import SwiftUI
 
-enum ActionPhase: String, CaseIterable, Identifiable {
+enum ActionPhase {
     case discover
     case qr
     case payment
-
-    var id: Self { self }
-
-    var title: String {
-        switch self {
-        case .discover:
-            return "Discover"
-        case .qr:
-            return "My QR"
-        case .payment:
-            return "Payment"
-        }
-    }
 
     var actions: [ActionItem] {
         switch self {
@@ -40,16 +27,6 @@ enum ActionPhase: String, CaseIterable, Identifiable {
         }
     }
 
-    var next: ActionPhase {
-        switch self {
-        case .discover:
-            return .qr
-        case .qr:
-            return .payment
-        case .payment:
-            return .discover
-        }
-    }
 }
 
 struct ActionItem: Identifiable {
@@ -74,47 +51,20 @@ struct ContextualActionSplit: View {
     @Namespace private var namespace
 
     var body: some View {
-        VStack(spacing: 0) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 28, style: .continuous)
-                    .fill(Color(uiColor: .secondarySystemBackground))
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 28, style: .continuous)
-                            .stroke(Color.black.opacity(0.05), lineWidth: 1)
-                    }
-
-                ambientLight
-                actionRail
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 296)
-            .clipped()
-
-            HStack {
-                Text(phase.title)
-                    .font(.system(.caption, design: .rounded).weight(.semibold))
-
-                Spacer()
-
-                HStack(spacing: 8) {
-                    ForEach(ActionPhase.allCases) { currentPhase in
-                        Button {
-                            withAnimation(animation) {
-                                phase = currentPhase
-                            }
-                        } label: {
-                            Circle()
-                                .fill(currentPhase == phase ? Color.primary : Color.primary.opacity(0.18))
-                                .frame(width: 7, height: 7)
-                                .scaleEffect(currentPhase == phase ? 1.4 : 1)
-                        }
-                        .buttonStyle(.plain)
-                        .accessibilityLabel("\(currentPhase.title) context")
-                    }
+        ZStack {
+            RoundedRectangle(cornerRadius: 28, style: .continuous)
+                .fill(Color(uiColor: .secondarySystemBackground))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 28, style: .continuous)
+                        .stroke(Color.black.opacity(0.05), lineWidth: 1)
                 }
-            }
-            .padding(.top, 12)
+
+            ambientLight
+            actionRail
         }
+        .frame(maxWidth: .infinity)
+        .frame(height: 296)
+        .clipped()
     }
 
     private var ambientLight: some View {

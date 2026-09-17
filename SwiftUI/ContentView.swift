@@ -135,7 +135,7 @@ struct ContentView: View {
             Label("Open SWUI.xcodeproj to run the native version.", systemImage: "arrow.up.right.square")
                 .font(.system(.subheadline, design: .rounded).weight(.semibold))
 
-            Text("The web showcase in docs/ mirrors the same three-state model for GitHub Pages.")
+            Text("On iOS 26+, the action rail uses native Liquid Glass. iOS 17 and later fall back to ultraThinMaterial, while docs/ mirrors the same three-state model for GitHub Pages.")
                 .font(.system(.caption, design: .rounded))
                 .foregroundStyle(.secondary)
         }
@@ -164,4 +164,3 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
-

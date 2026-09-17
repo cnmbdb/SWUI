@@ -68,7 +68,6 @@ struct ActionItem: Identifiable {
 
 struct ContextualActionSplit: View {
     @Binding var phase: ActionPhase
-    @Binding var isPlaying: Bool
     let animation: Animation
     let onSelect: (ActionItem) -> Void
 
@@ -92,14 +91,27 @@ struct ContextualActionSplit: View {
             .clipped()
 
             HStack {
-                Text("Contextual action split")
+                Text(phase.title)
                     .font(.system(.caption, design: .rounded).weight(.semibold))
 
                 Spacer()
 
-                Text(phase.title)
-                    .font(.system(.caption, design: .rounded))
-                    .foregroundStyle(.secondary)
+                HStack(spacing: 8) {
+                    ForEach(ActionPhase.allCases) { currentPhase in
+                        Button {
+                            withAnimation(animation) {
+                                phase = currentPhase
+                            }
+                        } label: {
+                            Circle()
+                                .fill(currentPhase == phase ? Color.primary : Color.primary.opacity(0.18))
+                                .frame(width: 7, height: 7)
+                                .scaleEffect(currentPhase == phase ? 1.4 : 1)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel("\(currentPhase.title) context")
+                    }
+                }
             }
             .padding(.top, 12)
         }

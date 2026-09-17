@@ -1,97 +1,54 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="SWUI is a native SwiftUI interaction study for contextual action split."
-    />
-    <meta name="theme-color" content="#f2f2f0" />
-    <title>SWUI / Contextual action split</title>
+    <meta name="theme-color" content="#e8e9e7" />
+    <title>SWUI / Liquid Glass</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
     <script src="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <style>
       :root {
         color-scheme: light;
-        --bg: #f3f3f1;
-        --bg-raised: #fbfbfa;
-        --stage: #e9e9e7;
+        --page: #e2e4e1;
+        --canvas: #e9e9e7;
         --ink: #151515;
-        --ink-soft: #666661;
-        --ink-faint: #92928c;
+        --muted: rgba(21, 21, 21, 0.52);
         --line: rgba(21, 21, 21, 0.12);
-        --line-strong: rgba(21, 21, 21, 0.2);
-        --green: #14d878;
-        --green-soft: #dcf9e9;
-        --blue: #4aa4ee;
-        --blue-soft: #e0f0ff;
-        --glass-fill: rgba(255, 255, 255, 0.44);
-        --glass-fill-strong: rgba(255, 255, 255, 0.62);
-        --glass-border: rgba(255, 255, 255, 0.76);
-        --glass-highlight: rgba(255, 255, 255, 0.92);
+        --glass: rgba(255, 255, 255, 0.44);
+        --glass-strong: rgba(255, 255, 255, 0.62);
+        --glass-border: rgba(255, 255, 255, 0.78);
+        --glass-highlight: rgba(255, 255, 255, 0.94);
         --glass-shadow: 0 18px 38px rgba(21, 21, 21, 0.12);
-        --shadow: 0 22px 60px rgba(21, 21, 21, 0.09);
-        --shadow-small: 0 8px 20px rgba(21, 21, 21, 0.08);
-        --radius-card: 28px;
-        --radius-small: 16px;
-        --content: 1240px;
-      }
-
-      [data-theme="dark"] {
-        color-scheme: dark;
-        --bg: #191a18;
-        --bg-raised: #222421;
-        --stage: #252824;
-        --ink: #f7f7f2;
-        --ink-soft: #babbb2;
-        --ink-faint: #777970;
-        --line: rgba(247, 247, 242, 0.14);
-        --line-strong: rgba(247, 247, 242, 0.24);
-        --green-soft: #163b29;
-        --blue-soft: #183549;
-        --glass-fill: rgba(255, 255, 255, 0.1);
-        --glass-fill-strong: rgba(255, 255, 255, 0.16);
-        --glass-border: rgba(255, 255, 255, 0.24);
-        --glass-highlight: rgba(255, 255, 255, 0.38);
-        --glass-shadow: 0 18px 38px rgba(0, 0, 0, 0.3);
-        --shadow: 0 22px 60px rgba(0, 0, 0, 0.24);
-        --shadow-small: 0 8px 20px rgba(0, 0, 0, 0.24);
+        --green: #14d878;
+        --blue: #4aa4ee;
       }
 
       * {
         box-sizing: border-box;
       }
 
-      html {
-        background: var(--bg);
-        scroll-behavior: smooth;
+      html,
+      body {
+        min-width: 320px;
+        min-height: 100%;
+        margin: 0;
       }
 
       body {
-        margin: 0;
-        min-width: 320px;
-        background: var(--bg);
+        display: grid;
+        min-height: 100svh;
+        place-items: center;
+        overflow-x: hidden;
+        background: var(--page);
         color: var(--ink);
         font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
-        font-size: 16px;
-        line-height: 1.5;
-        transition: background-color 260ms ease, color 260ms ease;
-      }
-
-      a {
-        color: inherit;
-        text-decoration: none;
       }
 
       button {
         color: inherit;
         font: inherit;
-      }
-
-      button,
-      a {
         -webkit-tap-highlight-color: transparent;
       }
 
@@ -100,400 +57,113 @@
         outline-offset: 4px;
       }
 
-      .shell {
-        width: min(calc(100% - 40px), var(--content));
-        margin: 0 auto;
-      }
-
-      .site-nav {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        min-height: 76px;
-        border-bottom: 1px solid var(--line);
-      }
-
-      .brand {
-        display: inline-flex;
-        align-items: center;
-        gap: 11px;
-        font-size: 14px;
-        font-weight: 700;
-        letter-spacing: 0.14em;
-      }
-
-      .brand-mark {
-        position: relative;
-        width: 24px;
-        height: 24px;
-        border: 1px solid var(--ink);
-        border-radius: 8px;
-      }
-
-      .brand-mark::before,
-      .brand-mark::after {
+      .sr-only {
         position: absolute;
-        content: "";
-        background: var(--ink);
-        border-radius: 999px;
-      }
-
-      .brand-mark::before {
-        width: 5px;
-        height: 5px;
-        top: 4px;
-        left: 4px;
-      }
-
-      .brand-mark::after {
-        width: 9px;
+        width: 1px;
         height: 1px;
-        right: 3px;
-        bottom: 6px;
-        transform: rotate(-45deg);
-        transform-origin: right center;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
       }
 
-      .nav-links {
-        display: flex;
-        align-items: center;
-        gap: 26px;
-        margin-left: auto;
-        margin-right: 28px;
-        color: var(--ink-soft);
-        font-size: 13px;
-      }
-
-      .nav-links a {
-        transition: color 180ms ease;
-      }
-
-      .nav-links a:hover {
-        color: var(--ink);
-      }
-
-      .nav-tools {
-        display: flex;
-        align-items: center;
-        gap: 9px;
-      }
-
-      .nav-button,
-      .icon-button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid var(--line);
-        background: transparent;
-        cursor: pointer;
-        transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
-      }
-
-      .nav-button {
-        min-height: 38px;
-        padding: 0 15px;
-        border-radius: 999px;
-        font-size: 13px;
-        font-weight: 600;
-      }
-
-      .nav-button:hover,
-      .icon-button:hover {
-        border-color: var(--line-strong);
-        background: var(--bg-raised);
-      }
-
-      .nav-button:active,
-      .icon-button:active,
-      .button:active,
-      .action:active {
-        transform: scale(0.97);
-      }
-
-      .icon-button {
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        font-size: 17px;
-      }
-
-      .hero {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(430px, 1fr);
-        align-items: center;
-        gap: clamp(38px, 5vw, 72px);
-        min-height: calc(100dvh - 77px);
-        padding: 54px 0 78px;
-      }
-
-      .hero-copy {
-        max-width: 530px;
-      }
-
-      .eyebrow,
-      .section-label,
-      .panel-label,
-      .code-label {
-        color: var(--ink-faint);
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-      }
-
-      .eyebrow {
-        margin: 0 0 22px;
-      }
-
-      h1,
-      h2,
-      h3,
-      p {
-        margin-top: 0;
-      }
-
-      h1 {
-        max-width: 580px;
-        margin-bottom: 25px;
-        font-size: clamp(3.5rem, 6vw, 5.4rem);
-        font-weight: 700;
-        letter-spacing: -0.075em;
-        line-height: 0.96;
-      }
-
-      .hero-copy > p {
-        max-width: 430px;
-        margin-bottom: 32px;
-        color: var(--ink-soft);
-        font-size: 18px;
-        letter-spacing: -0.02em;
-        line-height: 1.45;
-      }
-
-      .hero-actions {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 12px;
-      }
-
-      .button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        min-height: 48px;
-        padding: 0 18px;
-        border: 1px solid transparent;
-        border-radius: 999px;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 650;
-        transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
-      }
-
-      .button-primary {
-        background: var(--ink);
-        color: var(--bg);
-      }
-
-      .button-primary:hover {
-        background: #30302e;
-      }
-
-      [data-theme="dark"] .button-primary:hover {
-        background: #e6e6df;
-        color: #191a18;
-      }
-
-      .button-secondary {
-        border-color: var(--line);
-        background: transparent;
-      }
-
-      .button-secondary:hover {
-        border-color: var(--line-strong);
-        background: var(--bg-raised);
-      }
-
-      .hero-meta {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-top: 26px;
-        color: var(--ink-faint);
-        font-size: 12px;
-      }
-
-      .meta-rule {
-        width: 22px;
-        height: 1px;
-        background: var(--line-strong);
-      }
-
-      .demo-panel {
+      .demo {
         position: relative;
         isolation: isolate;
+        width: min(calc(100% - 32px), 820px);
+        padding: 14px;
         overflow: hidden;
-        padding: 15px;
         border: 1px solid var(--glass-border);
         border-radius: 34px;
-        background: var(--glass-fill);
-        -webkit-backdrop-filter: blur(26px) saturate(170%);
-        backdrop-filter: blur(26px) saturate(170%);
-        box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow);
+        background: var(--glass);
+        -webkit-backdrop-filter: blur(28px) saturate(175%);
+        backdrop-filter: blur(28px) saturate(175%);
+        box-shadow: inset 0 1px 0 var(--glass-highlight), 0 30px 70px rgba(21, 21, 21, 0.14);
       }
 
-      .demo-panel::before {
+      .demo::before {
         position: absolute;
         inset: 1px 1px auto;
         height: 46%;
         border-radius: 33px 33px 50% 50%;
-        background: linear-gradient(118deg, rgba(255, 255, 255, 0.28), transparent 52%);
-        content: "";
-        pointer-events: none;
-        opacity: 0.72;
-      }
-
-      .demo-panel::after {
-        position: absolute;
-        inset: 0;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        border-radius: inherit;
+        background: linear-gradient(118deg, rgba(255, 255, 255, 0.32), transparent 58%);
         content: "";
         pointer-events: none;
       }
 
-      .panel-top,
-      .panel-bottom {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-
-      .panel-top {
-        padding: 3px 4px 14px 7px;
-      }
-
-      .panel-label {
-        letter-spacing: 0.1em;
-      }
-
-      .panel-bottom {
-        gap: 12px;
-        padding: 14px 6px 2px 8px;
-      }
-
-      .panel-status {
-        min-width: 0;
-        color: var(--ink-soft);
-        font-size: 13px;
-      }
-
-      .panel-status strong {
-        display: block;
-        overflow: hidden;
-        color: var(--ink);
-        font-size: 14px;
-        font-weight: 650;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .phase-dots {
-        display: flex;
-        flex: 0 0 auto;
-        align-items: center;
-        gap: 7px;
-      }
-
-      .phase-dot {
-        width: 7px;
-        height: 7px;
-        padding: 0;
-        border: 0;
-        border-radius: 50%;
-        background: var(--line-strong);
-        cursor: pointer;
-        transition: transform 200ms ease, background-color 200ms ease;
-      }
-
-      .phase-dot[aria-selected="true"] {
-        transform: scale(1.45);
-        background: var(--ink);
-      }
-
-      .context-canvas {
+      .canvas {
         position: relative;
         isolation: isolate;
         display: grid;
+        min-height: clamp(360px, 68svh, 620px);
         place-items: center;
-        min-height: clamp(300px, 31vw, 420px);
         overflow: hidden;
         border: 1px solid var(--line);
-        border-radius: 25px;
-        background: var(--stage);
+        border-radius: 26px;
+        background: var(--canvas);
       }
 
-      .context-canvas::before,
-      .context-canvas::after {
+      .canvas::before,
+      .canvas::after {
         position: absolute;
-        width: 210px;
-        height: 210px;
+        width: 230px;
+        height: 230px;
         border-radius: 50%;
         content: "";
-        filter: blur(34px);
-        opacity: 0.48;
+        filter: blur(38px);
+        opacity: 0.46;
         pointer-events: none;
       }
 
-      .context-canvas::before {
-        top: -108px;
-        left: -74px;
-        background: rgba(20, 216, 120, 0.3);
+      .canvas::before {
+        top: -120px;
+        left: -86px;
+        background: rgba(20, 216, 120, 0.34);
       }
 
-      .context-canvas::after {
-        right: -76px;
-        bottom: -112px;
-        background: rgba(74, 164, 238, 0.26);
+      .canvas::after {
+        right: -86px;
+        bottom: -122px;
+        background: rgba(74, 164, 238, 0.28);
       }
 
       .action-rail {
         position: relative;
         z-index: 1;
-        display: inline-flex;
+        display: flex;
         align-items: center;
         justify-content: center;
         gap: 12px;
-        min-height: 72px;
-        padding: 10px;
-        transform-origin: center center;
+        max-width: 100%;
+        padding: 20px;
+        transform-origin: center;
       }
 
       .action {
         position: relative;
         isolation: isolate;
-        overflow: hidden;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 10px;
-        min-height: 54px;
+        min-height: 56px;
         padding: 0 18px;
+        overflow: hidden;
         border: 1px solid var(--glass-border);
         border-radius: 999px;
-        background: var(--glass-fill-strong);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
-        backdrop-filter: blur(20px) saturate(180%);
-        box-shadow: inset 0 1px 0 var(--glass-highlight), var(--glass-shadow);
+        background: var(--glass-strong);
         color: var(--ink);
         cursor: pointer;
+        -webkit-backdrop-filter: blur(22px) saturate(185%);
+        backdrop-filter: blur(22px) saturate(185%);
+        box-shadow: inset 0 1px 0 var(--glass-highlight), var(--glass-shadow);
         font-size: 17px;
         font-weight: 650;
         line-height: 1;
         white-space: nowrap;
-        transition: box-shadow 180ms ease, transform 180ms ease;
+        transition: transform 150ms ease, box-shadow 180ms ease;
       }
 
       .action::before {
@@ -501,26 +171,34 @@
         inset: 1px 1px auto;
         height: 52%;
         border-radius: inherit;
-        background: linear-gradient(118deg, rgba(255, 255, 255, 0.3), transparent 64%);
+        background: linear-gradient(118deg, rgba(255, 255, 255, 0.34), transparent 64%);
         content: "";
         pointer-events: none;
-        opacity: 0.8;
       }
 
       .action:hover {
-        box-shadow: 0 8px 18px rgba(21, 21, 21, 0.12);
+        box-shadow: inset 0 1px 0 var(--glass-highlight), 0 12px 26px rgba(21, 21, 21, 0.16);
+      }
+
+      .action:active {
+        transform: scale(0.96);
+      }
+
+      .action > * {
+        position: relative;
+        z-index: 1;
       }
 
       .action-icon {
         display: inline-grid;
-        place-items: center;
         width: 23px;
         height: 23px;
+        place-items: center;
         font-size: 22px;
       }
 
       .action-close {
-        width: 54px;
+        width: 56px;
         padding: 0;
       }
 
@@ -548,420 +226,74 @@
         background: var(--blue);
       }
 
-      .showcase {
-        border-top: 1px solid var(--line);
-        padding: 132px 0;
-      }
-
-      .section-heading {
-        max-width: 720px;
-        margin-bottom: 60px;
-      }
-
-      .section-label {
-        margin-bottom: 18px;
-      }
-
-      h2 {
-        margin-bottom: 20px;
-        font-size: clamp(2.5rem, 5vw, 5rem);
-        font-weight: 680;
-        letter-spacing: -0.065em;
-        line-height: 0.98;
-      }
-
-      .section-heading > p:last-child,
-      .motion-copy > p:last-child {
-        max-width: 560px;
-        margin-bottom: 0;
-        color: var(--ink-soft);
-        font-size: 18px;
-        letter-spacing: -0.02em;
-      }
-
-      .state-story {
-        display: grid;
-        grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
-        gap: 18px;
-      }
-
-      .state-card {
+      .demo-footer {
         display: flex;
-        flex-direction: column;
+        align-items: center;
         justify-content: space-between;
-        min-height: 360px;
-        padding: 25px;
-        overflow: hidden;
-        border: 1px solid var(--line);
-        border-radius: var(--radius-card);
-        background: var(--bg-raised);
+        gap: 16px;
+        padding: 14px 6px 2px 8px;
       }
 
-      .state-card-large {
-        min-height: 430px;
-        background: var(--stage);
+      .context {
+        min-width: 0;
       }
 
-      .state-card-stack {
-        display: grid;
-        gap: 18px;
-      }
-
-      .state-card-small {
-        min-height: 206px;
-      }
-
-      .state-card-head {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 18px;
-      }
-
-      .state-card h3 {
-        margin-bottom: 8px;
-        font-size: 23px;
-        letter-spacing: -0.04em;
-      }
-
-      .state-card p {
-        max-width: 270px;
-        margin-bottom: 0;
-        color: var(--ink-soft);
-        font-size: 14px;
-      }
-
-      .state-index {
-        color: var(--ink-faint);
+      .context-label {
+        display: block;
+        margin-bottom: 2px;
+        color: var(--muted);
         font-size: 12px;
-        font-variant-numeric: tabular-nums;
       }
 
-      .mini-rail {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 9px;
-        margin-top: auto;
-        padding-top: 34px;
-      }
-
-      .mini-action {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        min-height: 38px;
-        padding: 0 12px;
-        border: 1px solid var(--line);
-        border-radius: 999px;
-        background: var(--bg-raised);
-        color: var(--ink);
-        font-size: 13px;
+      .context-name {
+        display: block;
+        font-size: 15px;
         font-weight: 650;
       }
 
-      .mini-action i {
-        font-size: 16px;
-      }
-
-      .mini-action.close {
-        width: 38px;
-        padding: 0;
-        justify-content: center;
-      }
-
-      .mini-action.pay {
-        padding-left: 5px;
-      }
-
-      .mini-action.pay i,
-      .mini-action.request i {
-        display: inline-grid;
-        place-items: center;
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        color: #151515;
-      }
-
-      .mini-action.pay i {
-        background: var(--green);
-      }
-
-      .mini-action.request i {
-        background: var(--blue);
-      }
-
-      .code-section {
-        display: grid;
-        grid-template-columns: minmax(240px, 0.7fr) minmax(0, 1.3fr);
-        align-items: start;
-        gap: clamp(42px, 9vw, 132px);
-      }
-
-      .code-copy h2 {
-        max-width: 450px;
-      }
-
-      .code-copy p {
-        max-width: 420px;
-        color: var(--ink-soft);
-        font-size: 17px;
-      }
-
-      .implementation-note {
-        display: inline-flex;
+      .phase-dots {
+        display: flex;
         align-items: center;
         gap: 8px;
-        margin-top: 23px;
-        color: var(--ink-faint);
-        font-size: 12px;
       }
 
-      .code-card {
-        overflow: hidden;
-        border: 1px solid var(--line);
-        border-radius: var(--radius-card);
-        background: #1a1b19;
-        box-shadow: var(--shadow);
-      }
-
-      .code-card-top {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 16px 19px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.11);
-        color: rgba(255, 255, 255, 0.56);
-        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-        font-size: 11px;
-      }
-
-      .code-dots {
-        display: flex;
-        gap: 6px;
-      }
-
-      .code-dots i {
-        display: block;
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.28);
-      }
-
-      pre {
-        margin: 0;
-        overflow: auto;
-        padding: 25px 26px 30px;
-        color: #dcded7;
-        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-        font-size: clamp(11px, 1.25vw, 14px);
-        line-height: 1.8;
-        tab-size: 2;
-      }
-
-      .token-keyword {
-        color: #d29bff;
-      }
-
-      .token-type {
-        color: #82d8ff;
-      }
-
-      .token-string {
-        color: #b8dc87;
-      }
-
-      .token-comment {
-        color: #7d8378;
-      }
-
-      .motion-section {
-        display: grid;
-        grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-        gap: clamp(44px, 9vw, 132px);
-        align-items: center;
-      }
-
-      .motion-copy h2 {
-        max-width: 520px;
-      }
-
-      .motion-steps {
-        display: grid;
-        gap: 0;
-        border-top: 1px solid var(--line);
-      }
-
-      .motion-step {
-        display: grid;
-        grid-template-columns: 100px 1fr;
-        gap: 26px;
-        padding: 23px 0;
-        border-bottom: 1px solid var(--line);
-      }
-
-      .motion-step-index {
-        color: var(--ink-faint);
-        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-        font-size: 12px;
-      }
-
-      .motion-step h3 {
-        margin-bottom: 6px;
-        font-size: 20px;
-        letter-spacing: -0.04em;
-      }
-
-      .motion-step p {
-        max-width: 430px;
-        margin-bottom: 0;
-        color: var(--ink-soft);
-        font-size: 14px;
-      }
-
-      .closing {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        align-items: end;
-        gap: 30px;
-        border-top: 1px solid var(--line);
-        padding: 104px 0 126px;
-      }
-
-      .closing h2 {
-        max-width: 720px;
-        margin-bottom: 0;
-      }
-
-      .site-footer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 20px;
-        min-height: 80px;
-        border-top: 1px solid var(--line);
-        color: var(--ink-faint);
-        font-size: 12px;
-      }
-
-      .sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
+      .phase-dot {
+        width: 8px;
+        height: 8px;
         padding: 0;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
         border: 0;
+        border-radius: 50%;
+        background: rgba(21, 21, 21, 0.2);
+        cursor: pointer;
+        transition: transform 180ms ease, background-color 180ms ease;
       }
 
-      .footer-links {
-        display: flex;
-        gap: 20px;
+      .phase-dot[aria-selected="true"] {
+        transform: scale(1.45);
+        background: var(--ink);
       }
 
-      .footer-links a:hover {
-        color: var(--ink);
-      }
-
-      .reveal {
-        opacity: 0;
-        transform: translateY(24px);
-        transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1), transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
-      }
-
-      .reveal.is-visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      @media (max-width: 860px) {
-        .hero {
-          grid-template-columns: 1fr;
-          min-height: auto;
-          padding-top: 65px;
+      @media (max-width: 560px) {
+        .demo {
+          width: min(calc(100% - 20px), 820px);
+          padding: 10px;
+          border-radius: 27px;
         }
 
-        .hero-copy {
-          max-width: 650px;
-        }
-
-        h1 {
-          max-width: 650px;
-          font-size: clamp(3.5rem, 13vw, 6rem);
-        }
-
-        .demo-panel {
-          max-width: 680px;
-        }
-
-        .code-section,
-        .motion-section {
-          grid-template-columns: 1fr;
-          gap: 48px;
-        }
-
-        .code-copy p {
-          max-width: 600px;
-        }
-      }
-
-      @media (max-width: 680px) {
-        .shell {
-          width: min(calc(100% - 28px), var(--content));
-        }
-
-        .site-nav {
-          min-height: 68px;
-        }
-
-        .nav-links {
-          display: none;
-        }
-
-        .nav-tools {
-          margin-left: auto;
-        }
-
-        .hero {
-          gap: 46px;
-          padding: 52px 0 65px;
-        }
-
-        h1 {
-          margin-bottom: 20px;
-          font-size: clamp(3.15rem, 16vw, 5rem);
-        }
-
-        .hero-copy > p {
-          font-size: 17px;
-        }
-
-        .hero-actions {
-          align-items: stretch;
-          flex-direction: column;
-        }
-
-        .hero-actions .button {
-          width: 100%;
-        }
-
-        .context-canvas {
-          min-height: 300px;
+        .canvas {
+          min-height: 330px;
+          border-radius: 21px;
         }
 
         .action-rail {
-          gap: 7px;
-          max-width: 100%;
-          padding: 7px;
+          gap: 8px;
+          padding: 12px;
         }
 
         .action {
+          min-height: 48px;
           gap: 7px;
-          min-height: 45px;
-          padding: 0 11px;
+          padding: 0 13px;
           font-size: 14px;
         }
 
@@ -972,545 +304,187 @@
         }
 
         .action-close {
-          width: 45px;
+          width: 48px;
         }
 
         .action-payment {
           padding-left: 4px;
-          padding-right: 12px;
+          padding-right: 13px;
         }
 
         .action-payment .action-icon {
-          width: 37px;
-          height: 37px;
-          font-size: 17px;
-        }
-
-        .showcase {
-          padding: 88px 0;
-        }
-
-        .section-heading {
-          margin-bottom: 38px;
-        }
-
-        h2 {
-          font-size: clamp(2.75rem, 13vw, 4rem);
-        }
-
-        .section-heading > p:last-child,
-        .motion-copy > p:last-child {
-          font-size: 16px;
-        }
-
-        .state-story {
-          grid-template-columns: 1fr;
-        }
-
-        .state-card,
-        .state-card-large {
-          min-height: 280px;
-        }
-
-        .state-card-small {
-          min-height: 220px;
-        }
-
-        .closing {
-          grid-template-columns: 1fr;
-          align-items: start;
-          padding: 86px 0 100px;
-        }
-
-        .closing .button {
-          width: 100%;
-        }
-
-        .site-footer {
-          align-items: flex-start;
-          flex-direction: column;
-          justify-content: center;
-          padding: 24px 0;
+          width: 38px;
+          height: 38px;
+          font-size: 18px;
         }
       }
 
       @media (prefers-reduced-motion: reduce) {
-        html {
-          scroll-behavior: auto;
-        }
-
         *,
         *::before,
         *::after {
           animation-duration: 0.01ms !important;
           animation-iteration-count: 1 !important;
-          scroll-behavior: auto !important;
           transition-duration: 0.01ms !important;
-        }
-
-        .reveal {
-          opacity: 1;
-          transform: none;
         }
       }
 
       @media (prefers-reduced-transparency: reduce) {
-        .demo-panel,
+        .demo,
         .action {
-          background: var(--bg-raised);
+          background: #f8f8f6;
           -webkit-backdrop-filter: none;
           backdrop-filter: none;
-          box-shadow: var(--shadow-small);
+          box-shadow: 0 8px 20px rgba(21, 21, 21, 0.08);
         }
 
-        .demo-panel::before,
-        .demo-panel::after,
+        .demo::before,
         .action::before,
-        .context-canvas::before,
-        .context-canvas::after {
+        .canvas::before,
+        .canvas::after {
           display: none;
         }
       }
     </style>
   </head>
   <body>
-    <div class="shell">
-      <nav class="site-nav" aria-label="Primary">
-        <a class="brand" href="#" aria-label="SWUI home">
-          <span class="brand-mark" aria-hidden="true"></span>
-          <span>SWUI</span>
-        </a>
-        <div class="nav-links">
-          <a href="#demo">Demo</a>
-          <a href="#swiftui">SwiftUI</a>
-          <a href="#motion">Motion</a>
+    <main class="demo" aria-label="SWUI Liquid Glass contextual action split">
+      <div class="canvas">
+        <div class="action-rail" id="actionRail" aria-live="polite" aria-label="Contextual actions"></div>
+      </div>
+      <div class="demo-footer">
+        <div class="context">
+          <span class="context-label">Current context</span>
+          <strong class="context-name" id="contextName">Discover</strong>
         </div>
-        <div class="nav-tools">
-          <a class="nav-button" href="https://github.com/cnmbdb/SWUI" target="_blank" rel="noreferrer">GitHub</a>
-          <button class="icon-button" id="themeToggle" type="button" aria-label="Switch theme">
-            <i class="ph ph-moon" aria-hidden="true"></i>
-          </button>
+        <div class="phase-dots" role="tablist" aria-label="Choose a context">
+          <button class="phase-dot" data-state="discover" role="tab" aria-label="Discover context" aria-selected="true"></button>
+          <button class="phase-dot" data-state="qr" role="tab" aria-label="My QR context" aria-selected="false"></button>
+          <button class="phase-dot" data-state="payment" role="tab" aria-label="Payment context" aria-selected="false"></button>
         </div>
-      </nav>
-
-      <header class="hero">
-        <div class="hero-copy reveal is-visible">
-          <p class="eyebrow">Interaction study</p>
-          <h1>Context changes the action.</h1>
-          <p>A native SwiftUI study of controls that split, merge, and settle into the next useful move.</p>
-          <div class="hero-actions">
-            <a class="button button-primary" id="playCta" href="#demo">
-              Play the sequence
-              <i class="ph ph-arrow-right" aria-hidden="true"></i>
-            </a>
-            <a class="button button-secondary" href="#swiftui">Read the SwiftUI</a>
-          </div>
-          <div class="hero-meta">
-            <span>Native SwiftUI</span>
-            <span class="meta-rule" aria-hidden="true"></span>
-            <span>iOS 27+</span>
-          </div>
-        </div>
-
-        <div class="demo-panel reveal is-visible" id="demo">
-          <div class="panel-top">
-            <span class="panel-label">Live prototype</span>
-            <button class="icon-button" id="playToggle" type="button" aria-label="Pause sequence">
-              <i class="ph ph-pause" aria-hidden="true"></i>
-            </button>
-          </div>
-          <div class="context-canvas">
-            <div class="action-rail" id="actionRail" aria-live="polite" aria-label="Contextual actions"></div>
-          </div>
-          <div class="panel-bottom">
-            <div class="panel-status">
-              <span>Current context</span>
-              <strong id="contextName">Discover</strong>
-            </div>
-            <div class="phase-dots" role="tablist" aria-label="Choose a context">
-              <button class="phase-dot" data-state="discover" role="tab" aria-label="Discover context" aria-selected="true"></button>
-              <button class="phase-dot" data-state="qr" role="tab" aria-label="My QR context" aria-selected="false"></button>
-              <button class="phase-dot" data-state="payment" role="tab" aria-label="Payment context" aria-selected="false"></button>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <main>
-        <section class="showcase reveal" id="story">
-          <div class="section-heading">
-            <p class="section-label">One rail, three moments</p>
-            <h2>Actions keep their place in the story.</h2>
-            <p>The same control surface changes shape around the next useful action. Order, color, and density all carry meaning.</p>
-          </div>
-
-          <div class="state-story">
-            <article class="state-card state-card-large">
-              <div class="state-card-head">
-                <div>
-                  <h3>Discover opens the field.</h3>
-                  <p>Neutral actions stay quiet until the user gives the interface more context.</p>
-                </div>
-                <span class="state-index">Discover</span>
-              </div>
-              <div class="mini-rail" aria-label="Discover action preview">
-                <span class="mini-action"><i class="ph ph-user-circle" aria-hidden="true"></i>Contact</span>
-                <span class="mini-action"><i class="ph ph-qr-code" aria-hidden="true"></i>Scan QR</span>
-                <span class="mini-action close"><i class="ph ph-x" aria-hidden="true"></i><span class="sr-only">Close</span></span>
-              </div>
-            </article>
-
-            <div class="state-card-stack">
-              <article class="state-card state-card-small">
-                <div class="state-card-head">
-                  <div>
-                    <h3>My QR reorders.</h3>
-                    <p>Close stays anchored while the QR action takes its place.</p>
-                  </div>
-                  <span class="state-index">My QR</span>
-                </div>
-                <div class="mini-rail" aria-label="My QR action preview">
-                  <span class="mini-action close"><i class="ph ph-x" aria-hidden="true"></i><span class="sr-only">Close</span></span>
-                  <span class="mini-action"><i class="ph ph-user-circle" aria-hidden="true"></i>Contact</span>
-                  <span class="mini-action"><i class="ph ph-qr-code" aria-hidden="true"></i>My QR</span>
-                </div>
-              </article>
-
-              <article class="state-card state-card-small">
-                <div class="state-card-head">
-                  <div>
-                    <h3>Payment commits.</h3>
-                    <p>Two semantic colors make the split readable at a glance.</p>
-                  </div>
-                  <span class="state-index">Payment</span>
-                </div>
-                <div class="mini-rail" aria-label="Payment action preview">
-                  <span class="mini-action pay"><i class="ph ph-arrow-up-right" aria-hidden="true"></i>Pay</span>
-                  <span class="mini-action request"><i class="ph ph-arrow-down-left" aria-hidden="true"></i>Request</span>
-                </div>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <section class="showcase code-section reveal" id="swiftui">
-          <div class="code-copy">
-            <p class="section-label">The native layer</p>
-            <h2>Same state machine. Native implementation.</h2>
-            <p>The source uses SwiftUI data, SF Symbols, native Liquid Glass, matched geometry, and one critically damped spring. There is no web component pretending to be the app.</p>
-            <span class="implementation-note">
-              <i class="ph ph-apple-logo" aria-hidden="true"></i>
-              Built for iOS 27+
-            </span>
-          </div>
-          <div class="code-card" aria-label="SwiftUI source excerpt">
-            <div class="code-card-top">
-              <span>ActionSplitView.swift</span>
-              <span class="code-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-            </div>
-            <pre><code><span class="token-keyword">enum</span> <span class="token-type">ActionPhase</span>: CaseIterable {
-    <span class="token-keyword">case</span> discover, qr, payment
-
-    <span class="token-keyword">var</span> actions: [<span class="token-type">ActionItem</span>] {
-        <span class="token-keyword">switch</span> <span class="token-keyword">self</span> {
-        <span class="token-keyword">case</span> .discover:
-            <span class="token-keyword">return</span> [.contact, .scan, .close]
-        <span class="token-keyword">case</span> .qr:
-            <span class="token-keyword">return</span> [.close, .contact, .myQR]
-        <span class="token-keyword">case</span> .payment:
-            <span class="token-keyword">return</span> [.pay, .request]
-        }
-    }
-}
-
-<span class="token-keyword">@Namespace</span> <span class="token-keyword">private</span> <span class="token-keyword">var</span> namespace
-
-<span class="token-type">GlassEffectContainer</span>(spacing: <span class="token-string">18</span>) {
-    <span class="token-type">HStack</span>(spacing: <span class="token-string">12</span>) {
-        <span class="token-type">ForEach</span>(phase.actions) { action <span class="token-keyword">in</span>
-            <span class="token-type">ActionPill</span>(action: action)
-                .glassEffect(.regular.interactive(), <span class="token-keyword">in</span>: <span class="token-type">Capsule</span>())
-                .glassEffectID(action.id, <span class="token-keyword">in</span>: namespace)
-                .glassEffectTransition(.matchedGeometry)
-        }
-    }
-}
-
-<span class="token-comment">// The current presentation value stays in the conversation.</span>
-<span class="token-keyword">withAnimation</span>(.spring(
-    response: <span class="token-string">0.52</span>,
-    dampingFraction: <span class="token-string">0.88</span>
-)) {
-    phase = nextPhase
-}</code></pre>
-          </div>
-        </section>
-
-        <section class="showcase motion-section reveal" id="motion">
-          <div class="motion-copy">
-            <p class="section-label">The motion model</p>
-            <h2>Make the change feel inevitable.</h2>
-            <p>Every transition answers a question: what moved, why did it move, and can the user change their mind halfway through?</p>
-          </div>
-          <div class="motion-steps">
-            <article class="motion-step">
-              <span class="motion-step-index">01</span>
-              <div>
-                <h3>Map the context.</h3>
-                <p>Actions are data first. Their identity survives the layout change, so SwiftUI can preserve spatial continuity.</p>
-              </div>
-            </article>
-            <article class="motion-step">
-              <span class="motion-step-index">02</span>
-              <div>
-                <h3>Split with purpose.</h3>
-                <p>Pay and Request separate only when the context earns two distinct directions.</p>
-              </div>
-            </article>
-            <article class="motion-step">
-              <span class="motion-step-index">03</span>
-              <div>
-                <h3>Leave an exit.</h3>
-                <p>The close action keeps a familiar home, while Reduce Motion replaces the spring with a calm fade.</p>
-              </div>
-            </article>
-          </div>
-        </section>
-
-        <section class="closing reveal">
-          <h2>One gesture. The right next move.</h2>
-          <a class="button button-primary" href="https://github.com/cnmbdb/SWUI" target="_blank" rel="noreferrer">
-            Open the source
-            <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
-          </a>
-        </section>
-      </main>
-
-      <footer class="site-footer">
-        <span>SWUI / Native interaction study</span>
-        <div class="footer-links">
-          <a href="https://github.com/cnmbdb/SWUI" target="_blank" rel="noreferrer">Repository</a>
-          <a href="https://x.com/withAnimationUI/status/2099386664506581042" target="_blank" rel="noreferrer">Reference on X</a>
-        </div>
-      </footer>
-    </div>
+      </div>
+    </main>
 
     <script>
       const states = {
         discover: {
           label: "Discover",
           actions: [
-            { id: "contact", label: "Contact", icon: "ph-user-circle", style: "neutral" },
-            { id: "scan", label: "Scan QR", icon: "ph-qr-code", style: "neutral" },
-            { id: "close", label: "Close", icon: "ph-x", style: "close" }
+            { id: "contact", label: "Contact", icon: "ph-user-circle", className: "" },
+            { id: "scan", label: "Scan QR", icon: "ph-qr-code", className: "" },
+            { id: "close", label: "Close", icon: "ph-x", className: "action-close" }
           ]
         },
         qr: {
           label: "My QR",
           actions: [
-            { id: "close", label: "Close", icon: "ph-x", style: "close" },
-            { id: "contact", label: "Contact", icon: "ph-user-circle", style: "neutral" },
-            { id: "my-qr", label: "My QR", icon: "ph-qr-code", style: "neutral" }
+            { id: "close", label: "Close", icon: "ph-x", className: "action-close" },
+            { id: "contact", label: "Contact", icon: "ph-user-circle", className: "" },
+            { id: "my-qr", label: "My QR", icon: "ph-qr-code", className: "" }
           ]
         },
         payment: {
           label: "Payment",
           actions: [
-            { id: "pay", label: "Pay", icon: "ph-arrow-up-right", style: "payment pay" },
-            { id: "request", label: "Request", icon: "ph-arrow-down-left", style: "payment request" }
+            { id: "pay", label: "Pay", icon: "ph-arrow-up-right", className: "action-payment action-pay" },
+            { id: "request", label: "Request", icon: "ph-arrow-down-left", className: "action-payment action-request" }
           ]
         }
       };
 
-      const order = ["discover", "qr", "payment"];
       const rail = document.querySelector("#actionRail");
       const contextName = document.querySelector("#contextName");
-      const playToggle = document.querySelector("#playToggle");
-      const playCta = document.querySelector("#playCta");
-      const themeToggle = document.querySelector("#themeToggle");
-      const phaseDots = [...document.querySelectorAll(".phase-dot")];
-      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const dots = [...document.querySelectorAll(".phase-dot")];
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
       let currentState = "discover";
-      let autoplay = !reducedMotion;
-      let timer = null;
+      let activeTimeline = null;
 
-      function createAction(action) {
-        const element = document.createElement("button");
-        element.type = "button";
-        element.className = "action action-" + action.style.replace(" ", " action-");
-        element.dataset.action = action.id;
-        element.setAttribute("aria-label", action.label);
+      function actionMarkup(action) {
+        const icon = action.className.includes("action-payment")
+          ? '<span class="action-icon"><i class="ph ' + action.icon + '" aria-hidden="true"></i></span>'
+          : '<i class="action-icon ph ' + action.icon + '" aria-hidden="true"></i>';
+        const label = action.className.includes("action-close")
+          ? '<span class="sr-only">' + action.label + "</span>"
+          : action.label;
 
-        const icon = document.createElement("span");
-        icon.className = "action-icon";
-        icon.setAttribute("aria-hidden", "true");
-        icon.innerHTML = '<i class="ph ' + action.icon + '"></i>';
-
-        if (action.style === "close") {
-          element.append(icon);
-          return element;
-        }
-
-        const label = document.createElement("span");
-        label.textContent = action.label;
-        element.append(icon, label);
-        return element;
+        return '<button class="action ' + action.className + '" data-action="' + action.id + '" type="button" aria-label="' + action.label + '">' + icon + label + "</button>";
       }
 
-      function updateControls() {
-        contextName.textContent = states[currentState].label;
-        phaseDots.forEach((dot) => {
+      function drawState() {
+        const state = states[currentState];
+        rail.innerHTML = state.actions.map(actionMarkup).join("");
+        contextName.textContent = state.label;
+        dots.forEach(dot => {
           dot.setAttribute("aria-selected", String(dot.dataset.state === currentState));
         });
       }
 
-      function drawState() {
-        rail.replaceChildren(...states[currentState].actions.map(createAction));
-        updateControls();
+      function nextForAction(actionId) {
+        if (actionId === "scan") return "qr";
+        if (actionId === "my-qr") return "payment";
+        if (actionId === "contact") return currentState === "discover" ? "qr" : "discover";
+        if (actionId === "pay" || actionId === "request" || actionId === "close") return "discover";
+        return currentState;
       }
 
-      function nextState() {
-        const index = order.indexOf(currentState);
-        return order[(index + 1) % order.length];
-      }
+      function goTo(nextState) {
+        if (nextState === currentState) return;
 
-      function renderState(next) {
-        if (next === currentState) return;
+        if (activeTimeline) activeTimeline.kill();
 
         const outgoing = [...rail.children];
-        const reduced = reducedMotion || !window.gsap;
+        const useMotion = !reducedMotion.matches && window.gsap;
 
-        if (reduced) {
-          currentState = next;
+        if (!useMotion) {
+          currentState = nextState;
           drawState();
           return;
         }
 
-        gsap.killTweensOf(outgoing);
-        const transition = gsap.timeline();
-        transition
+        activeTimeline = gsap.timeline({
+          onComplete: () => {
+            activeTimeline = null;
+          }
+        });
+
+        activeTimeline
           .to(outgoing, {
-            y: 8,
+            y: 10,
             autoAlpha: 0,
-            scale: 0.93,
+            scale: 0.92,
             duration: 0.18,
             stagger: 0.025,
             ease: "power2.in"
           })
           .call(() => {
-            currentState = next;
+            currentState = nextState;
             drawState();
-          })
-          .fromTo(
-            [...rail.children],
-            { y: -8, autoAlpha: 0, scale: 0.94 },
-            {
-              y: 0,
-              autoAlpha: 1,
-              scale: 1,
-              duration: 0.46,
-              stagger: 0.035,
-              ease: "back.out(1.15)"
-            },
-            "-=0.025"
-          );
+            gsap.fromTo(
+              [...rail.children],
+              { y: -10, autoAlpha: 0, scale: 0.92 },
+              {
+                y: 0,
+                autoAlpha: 1,
+                scale: 1,
+                duration: 0.48,
+                stagger: 0.04,
+                ease: "back.out(1.16)"
+              }
+            );
+          });
       }
 
-      function updatePlayButton() {
-        playToggle.setAttribute("aria-label", autoplay ? "Pause sequence" : "Play sequence");
-        playToggle.innerHTML = '<i class="ph ' + (autoplay ? "ph-pause" : "ph-play") + '" aria-hidden="true"></i>';
-      }
-
-      function stopTimer() {
-        if (timer) {
-          window.clearInterval(timer);
-          timer = null;
-        }
-      }
-
-      function startTimer() {
-        stopTimer();
-        if (!autoplay || reducedMotion) return;
-        timer = window.setInterval(() => renderState(nextState()), 2650);
-      }
-
-      function setAutoplay(value) {
-        autoplay = value;
-        updatePlayButton();
-        startTimer();
-      }
-
-      rail.addEventListener("click", (event) => {
+      rail.addEventListener("click", event => {
         const action = event.target.closest(".action");
         if (!action) return;
-
-        setAutoplay(false);
-        if (action.dataset.action === "scan") {
-          renderState("qr");
-        } else if (action.dataset.action === "pay" || action.dataset.action === "request") {
-          renderState("payment");
-        } else if (action.dataset.action === "close") {
-          renderState("discover");
-        }
+        goTo(nextForAction(action.dataset.action));
       });
 
-      phaseDots.forEach((dot) => {
-        dot.addEventListener("click", () => {
-          setAutoplay(false);
-          renderState(dot.dataset.state);
-        });
-      });
-
-      playToggle.addEventListener("click", () => setAutoplay(!autoplay));
-
-      playCta.addEventListener("click", (event) => {
-        event.preventDefault();
-        document.querySelector("#demo").scrollIntoView({
-          behavior: reducedMotion ? "auto" : "smooth",
-          block: "center"
-        });
-        currentState = "discover";
-        drawState();
-        setAutoplay(true);
-      });
-
-      themeToggle.addEventListener("click", () => {
-        const root = document.documentElement;
-        const nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
-        root.dataset.theme = nextTheme;
-        themeToggle.innerHTML = '<i class="ph ' + (nextTheme === "dark" ? "ph-sun" : "ph-moon") + '" aria-hidden="true"></i>';
-        themeToggle.setAttribute("aria-label", nextTheme === "dark" ? "Switch to light theme" : "Switch to dark theme");
-      });
-
-      const reveals = [...document.querySelectorAll(".reveal:not(.is-visible)")];
-      if ("IntersectionObserver" in window) {
-        const observer = new IntersectionObserver(
-          (entries, instance) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add("is-visible");
-                instance.unobserve(entry.target);
-              }
-            });
-          },
-          { threshold: 0.14 }
-        );
-        reveals.forEach((element) => observer.observe(element));
-      } else {
-        reveals.forEach((element) => element.classList.add("is-visible"));
-      }
-
-      document.addEventListener("visibilitychange", () => {
-        if (document.hidden) {
-          stopTimer();
-        } else {
-          startTimer();
-        }
+      dots.forEach(dot => {
+        dot.addEventListener("click", () => goTo(dot.dataset.state));
       });
 
       drawState();
-      updatePlayButton();
-      startTimer();
     </script>
   </body>
 </html>

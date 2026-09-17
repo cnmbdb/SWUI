@@ -30,7 +30,7 @@ enum ActionPhase {
 }
 
 struct ActionItem: Identifiable {
-    enum Style {
+    enum Style: Equatable {
         case neutral
         case close
         case pay
@@ -57,11 +57,6 @@ struct ContextualActionSplit: View {
             RoundedRectangle(cornerRadius: 28, style: .continuous)
                 .fill(.clear)
                 .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 28, style: .continuous))
-                .overlay {
-                    RoundedRectangle(cornerRadius: 28, style: .continuous)
-                        .stroke(Color.white.opacity(0.72), lineWidth: 1)
-                }
-                .shadow(color: .black.opacity(0.14), radius: 18, y: 10)
 
             actionRail
         }
@@ -88,7 +83,7 @@ struct ContextualActionSplit: View {
     }
 
     private var actionRail: some View {
-        GlassEffectContainer(spacing: 18) {
+        GlassEffectContainer(spacing: 12) {
             actionItems
         }
     }
@@ -97,13 +92,6 @@ struct ContextualActionSplit: View {
         HStack(spacing: 12) {
             ForEach(phase.actions) { action in
                 actionView(for: action)
-                .matchedGeometryEffect(id: "pill-\(action.id)", in: namespace)
-                .transition(
-                    .asymmetric(
-                        insertion: .scale(scale: 0.82).combined(with: .opacity),
-                        removal: .scale(scale: 1.08).combined(with: .opacity)
-                    )
-                )
             }
         }
         .padding(20)
@@ -111,82 +99,52 @@ struct ContextualActionSplit: View {
     }
 
     private func actionView(for action: ActionItem) -> some View {
-        ActionPill(action: action) {
-            onSelect(action)
-        }
+        actionButton(for: action)
         .glassEffectID(action.id, in: namespace)
         .glassEffectTransition(.matchedGeometry)
     }
-}
-
-private struct ActionPill: View {
-    let action: ActionItem
-    let onSelect: () -> Void
-
-    private var labelFont: Font {
-        .system(.body, design: .rounded).weight(.semibold)
-    }
-
-    var body: some View {
-        Button(action: onSelect) {
-            content
-        }
-        .buttonStyle(.plain)
-        .contentShape(Capsule())
-        .accessibilityLabel(action.title)
-        .accessibilityHint("Changes the current action context")
-    }
 
     @ViewBuilder
-    private var content: some View {
+    private func actionButton(for action: ActionItem) -> some View {
         switch action.style {
         case .neutral:
-            HStack(spacing: 10) {
-                Image(systemName: action.systemImage)
-                    .font(.system(size: 20, weight: .semibold))
-
-                Text(action.title)
-                    .font(labelFont)
+            Button {
+                onSelect(action)
+            } label: {
+                Label(action.title, systemImage: action.systemImage)
+                    .font(.system(.body, design: .rounded).weight(.semibold))
                     .lineLimit(1)
             }
-            .foregroundStyle(.primary)
-            .padding(.horizontal, 18)
-            .frame(minHeight: 54)
-            .glassEffect(.regular.interactive(), in: Capsule())
+            .buttonStyle(.glass)
+            .accessibilityLabel(action.title)
+            .accessibilityHint("Changes the current action context")
 
         case .close:
-            Image(systemName: action.systemImage)
-                .font(.system(size: 20, weight: .semibold))
-                .foregroundStyle(.primary)
-                .frame(width: 54, height: 54)
-                .glassEffect(.regular.interactive(), in: Circle())
+            Button {
+                onSelect(action)
+            } label: {
+                Image(systemName: action.systemImage)
+                    .font(.system(size: 20, weight: .semibold))
+            }
+            .buttonStyle(.glass)
+            .frame(width: 54, height: 54)
+            .accessibilityLabel(action.title)
+            .accessibilityHint("Changes the current action context")
 
         case .pay, .request:
-            let accent: Color
-            switch action.style {
-            case .pay:
-                accent = Color(red: 0.08, green: 0.80, blue: 0.42)
-            case .request:
-                accent = Color(red: 0.21, green: 0.58, blue: 0.94)
-            default:
-                accent = .clear
-            }
-
-            HStack(spacing: 10) {
-                Image(systemName: action.systemImage)
-                    .font(.system(size: 19, weight: .bold))
-                    .frame(width: 44, height: 44)
-                    .background(accent, in: Circle())
-
-                Text(action.title)
-                    .font(labelFont)
+            Button {
+                onSelect(action)
+            } label: {
+                Label(action.title, systemImage: action.systemImage)
+                    .font(.system(.body, design: .rounded).weight(.semibold))
                     .lineLimit(1)
             }
-            .foregroundStyle(.primary)
-            .padding(.leading, 5)
-            .padding(.trailing, 18)
-            .frame(minHeight: 54)
-            .glassEffect(.regular.tint(accent).interactive(), in: Capsule())
+            .buttonStyle(.glassProminent)
+            .tint(action.style == .pay
+                ? Color(red: 0.08, green: 0.80, blue: 0.42)
+                : Color(red: 0.21, green: 0.58, blue: 0.94))
+            .accessibilityLabel(action.title)
+            .accessibilityHint("Changes the current action context")
         }
     }
 }

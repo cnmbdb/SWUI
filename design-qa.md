@@ -33,6 +33,15 @@
 - States and interactions: verified `My QR -> Pay/Request`, `Pay -> Discover`, and `Scan QR -> My QR` on the deployed page.
 - Accessibility: semantic buttons, accessible labels, focus-visible styling, reduced-motion and reduced-transparency handling are present. The live browser console returned no warning or error entries.
 
+## Native SwiftUI source audit
+
+- The Xcode target contains only `SWUIApp.swift`, `ContentView.swift`, and `ActionSplitView.swift`; the web preview is not part of the App target.
+- Standard controls use Apple’s `GlassButtonStyle` through `.buttonStyle(.glass)` and `.buttonStyle(.glassProminent)`.
+- The custom panel uses Apple’s `.glassEffect(.regular, in:)` modifier.
+- The action group uses Apple’s `GlassEffectContainer`, `glassEffectID`, and `glassEffectTransition(.matchedGeometry)` APIs.
+- Icons use `Image(systemName:)` and no hand-drawn glass, border, or shadow is used in the native layer.
+- Source verification passed with `swiftc -parse`. A full Xcode/iOS Simulator render could not be run because this host has only Command Line Tools selected; `xcodebuild` is unavailable until full Xcode is installed.
+
 ## Comparison history
 
 1. Initial pass: P1 visual mismatch. The panel was too wide/tall at the mobile breakpoint, controls were oversized, the default state differed from the source, and the material read as a generic translucent card.

@@ -1,5 +1,9 @@
 import SwiftUI
 
+#if os(macOS)
+import AppKit
+#endif
+
 struct ContentView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var phase: ActionPhase = .qr
@@ -12,7 +16,7 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
-            Color(uiColor: .systemGroupedBackground)
+            backgroundColor
                 .ignoresSafeArea()
 
             ContextualActionSplit(
@@ -23,6 +27,16 @@ struct ContentView: View {
             }
             .padding(10)
         }
+    }
+
+    private var backgroundColor: Color {
+        #if os(iOS)
+        Color(uiColor: .systemGroupedBackground)
+        #elseif os(macOS)
+        Color(nsColor: .windowBackgroundColor)
+        #else
+        Color.clear
+        #endif
     }
 
     private func handle(_ action: ActionItem) {

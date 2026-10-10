@@ -1,8 +1,9 @@
 node_modules/
-dist/
-coverage/
+outputs/
+verification/
+*.zip
+*.webm
+*.wav
+*.log
 .DS_Store
-.env
-.env.*
-!.env.example
-
+Thumbs.db
